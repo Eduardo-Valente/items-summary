@@ -13,15 +13,25 @@ import model.entities.Product;
 
 public class Program {
 	
+	/* 
+	 * Reads an input file and creates a CSV file with the sub total calculus inside
+	 * an created sub directory 
+	 * 
+	 * e.g.: input file: C:\User\file.csv
+	 * 		 sub directory: C:\User\out
+	 */
+	
 	public static void main(String[] args) {
 
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
 		
-		String inputFile = "D:\\Eduardo\\Cursos\\Java Completo 2020\\Intermediário\\Sold Items.csv";
-		String outputFile = "D:\\Eduardo\\Cursos\\Java Completo 2020\\Intermediário\\Summary.csv";
-		String dirPath = "D:\\Eduardo\\Cursos\\Java Completo 2020\\Intermediário";
+		String inputFile, dirPath;
 		
+		System.out.print("Enter the input file full path: ");
+		inputFile = sc.nextLine();
+		System.out.print("Enter output file subdirectory full path for its creation: ");
+		dirPath = sc.nextLine();
 		
 		String line;
 		String joinedFields;
@@ -29,10 +39,18 @@ public class Program {
 		Double price;
 		Integer quantity;
 		
-		boolean success = new File(dirPath + "\\out").mkdir();
-		System.out.println("Directory created successfully: " + success);
+		boolean success = new File(dirPath).mkdir();
 		
-		String completeOutputFilePath = "D:\\Eduardo\\Cursos\\Java Completo 2020\\Intermediário\\out\\Summary.csv";
+		if(success == true)
+		{	
+			System.out.println("Directory created successfully!");
+		}
+		else {
+			System.out.println("Couldn't created directory because it already exists "
+								+ "or you don't have the permission to create one");
+		}
+			
+		String completeOutputFilePath = dirPath + "\\Summary.csv";
 		
 		try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
 
@@ -67,6 +85,14 @@ public class Program {
 		catch(NullPointerException npe)
 		{
 			System.out.println("Error message: " + npe.getMessage());
+		}
+		
+		finally {
+			
+			if(sc != null)
+			{
+				sc.close();
+			}
 		}
 	}	
 }
